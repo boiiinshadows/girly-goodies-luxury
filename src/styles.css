@@ -242,6 +242,14 @@
     transform: translateY(0);
   }
 
+  /* Card ambient glow on hover */
+  .card-glow {
+    transition: box-shadow var(--duration-hover-slow) var(--ease-luxe);
+  }
+  .group:hover .card-glow {
+    box-shadow: 0 0 40px oklch(0.7 0.16 5 / 0.08), var(--shadow-luxe);
+  }
+
   /* GPU-accelerated animations */
   .will-change-transform {
     will-change: transform;
