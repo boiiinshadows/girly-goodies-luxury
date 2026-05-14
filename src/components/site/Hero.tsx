@@ -57,8 +57,8 @@ export function Hero() {
         style={{ y: yBgDeep }}
         className="absolute inset-0 pointer-events-none will-change-transform"
       >
-        <div className="absolute top-[5%] -left-32 w-[700px] h-[700px] rounded-full bg-blush/30 blur-3xl md:blur-3xl blur-2xl" />
-        <div className="absolute bottom-[0%] -right-32 w-[800px] h-[800px] rounded-full bg-champagne/30 blur-3xl md:blur-3xl blur-2xl" />
+        <div className="absolute top-[5%] -left-32 w-[700px] h-[700px] rounded-full bg-blush/30 blur-2xl md:blur-3xl" />
+        <div className="absolute bottom-[0%] -right-32 w-[800px] h-[800px] rounded-full bg-champagne/30 blur-2xl md:blur-3xl" />
       </motion.div>
 
       {/* Mid parallax layer — medium orbs */}
@@ -66,8 +66,8 @@ export function Hero() {
         style={{ y: yBgMid }}
         className="absolute inset-0 pointer-events-none will-change-transform"
       >
-        <div className="absolute top-[15%] left-[20%] w-[400px] h-[400px] rounded-full bg-rose-gold/15 blur-3xl md:blur-3xl blur-xl" />
-        <div className="absolute bottom-[20%] right-[15%] w-[350px] h-[350px] rounded-full bg-blush/25 blur-3xl md:blur-3xl blur-xl" />
+        <div className="absolute top-[15%] left-[20%] w-[400px] h-[400px] rounded-full bg-rose-gold/15 blur-xl md:blur-3xl" />
+        <div className="absolute bottom-[20%] right-[15%] w-[350px] h-[350px] rounded-full bg-blush/25 blur-xl md:blur-3xl" />
       </motion.div>
 
       {/* Near parallax layer — small accent glows */}
@@ -136,7 +136,7 @@ export function Hero() {
               {/* Center — Perfume (front, largest) */}
               <motion.div
                 style={{ y: sy }}
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[300px] lg:w-[340px] z-30 will-change-transform"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] sm:w-[300px] lg:w-[340px] z-[30] will-change-transform"
               >
                 <div className="animate-float will-change-transform">
                   <div className="absolute inset-0 rounded-[2.5rem] gradient-rose blur-3xl opacity-30 scale-110" />
@@ -234,7 +234,19 @@ export function Hero() {
 
 /** Animated heading with word-by-word stagger */
 function AnimatedHeading() {
-  const words = ["Elegance", "in every", "step."];
+  const words = [
+    { text: "Elegance", className: "" },
+    { text: "in every", className: "italic font-light" },
+    { text: "step.", className: "gradient-gold font-medium" },
+  ];
+
+  const wordVariants = {
+    hidden: { y: "110%" },
+    visible: (i: number) => ({
+      y: "0%",
+      transition: { duration: 1.2, delay: i * 0.15, ease: ease.luxe },
+    }),
+  };
 
   return (
     <motion.h1
@@ -244,27 +256,11 @@ function AnimatedHeading() {
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden mr-[0.25em] last:mr-0">
           <motion.span
-            initial={{ y: "110%" }}
-            animate={i === 0 ? { y: "0%" } : undefined}
-            variants={{
-              visible: {
-                y: "0%",
-                transition: {
-                  duration: 1.2,
-                  delay: i * 0.15,
-                  ease: ease.luxe,
-                },
-              },
-            }}
+            custom={i}
+            variants={wordVariants}
             className="inline-block"
           >
-            {i === 0 && "Elegance"}
-            {i === 1 && (
-              <span>
-                <span className="italic font-light">in every</span>
-              </span>
-            )}
-            {i === 2 && <span className="gradient-gold font-medium">step.</span>}
+            <span className={word.className}>{word.text}</span>
           </motion.span>
         </span>
       ))}
