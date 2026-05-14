@@ -6,6 +6,7 @@ import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 import g5 from "@/assets/cat-perfume.jpg";
 import g6 from "@/assets/cat-sandals.jpg";
+import { revealScale, staggerContainer, ease } from "@/lib/animations";
 
 const tiles = [
   { src: g1, span: "row-span-2" },
@@ -24,7 +25,7 @@ export function Gallery() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: ease.luxe }}
           className="text-center mb-14"
         >
           <div className="label-accent mb-3 flex items-center justify-center gap-2">
@@ -33,15 +34,18 @@ export function Gallery() {
           <h2 className="font-display text-4xl lg:text-6xl">Tagged with love</h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-[180px] md:grid-rows-[220px] gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-2 md:grid-cols-4 grid-rows-[180px] md:grid-rows-[220px] gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]"
+        >
           {tiles.map((t, i) => (
             <motion.a
               href="#"
               key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              variants={revealScale}
               className={`group relative overflow-hidden rounded-2xl shadow-soft ${t.span}`}
             >
               <img
@@ -57,7 +61,7 @@ export function Gallery() {
               </div>
             </motion.a>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -52,6 +52,11 @@
   --duration-hover: 500ms;
   --duration-hover-slow: 700ms;
   --duration-image: 1.4s;
+  --duration-reveal: 1s;
+  --stagger-delay: 0.1s;
+  --ease-luxe: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 :root {
@@ -245,6 +250,30 @@
     will-change: opacity;
   }
 
+  /* Cinematic reveal — used by GSAP ScrollTrigger */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .reveal-fade {
+    opacity: 0;
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  /* Magnetic button hover zone */
+  .magnetic-zone {
+    position: relative;
+  }
+  .magnetic-zone::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border-radius: inherit;
+  }
+
   @keyframes float-slow {
     0%,
     100% {
@@ -256,6 +285,20 @@
   }
   .animate-float {
     animation: float-slow 8s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  @keyframes float-gentle {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+  .animate-float-gentle {
+    animation: float-gentle 6s ease-in-out infinite;
     will-change: transform;
   }
 
@@ -286,6 +329,33 @@
       opacity: 0;
     }
   }
+
+  /* Pulse glow for accent elements */
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 oklch(0.7 0.16 5 / 0);
+    }
+    50% {
+      box-shadow: 0 0 20px 4px oklch(0.7 0.16 5 / 0.15);
+    }
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  /* Line draw animation for decorative borders */
+  @keyframes line-draw {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  .animate-line-draw {
+    animation: line-draw 1.2s var(--ease-luxe) forwards;
+  }
 }
 
 /* Mobile performance: reduce blur and disable heavy effects */
@@ -304,13 +374,24 @@
   .animate-float {
     animation: float-slow 12s ease-in-out infinite;
   }
+  .animate-float-gentle {
+    animation: float-gentle 8s ease-in-out infinite;
+  }
 }
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
-  .shimmer {
+  .animate-float-gentle,
+  .shimmer,
+  .animate-pulse-glow {
     animation: none;
+  }
+  .reveal-up,
+  .reveal-fade,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
   }
   * {
     transition-duration: 0.01ms !important;

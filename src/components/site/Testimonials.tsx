@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote } from "lucide-react";
+import { ease } from "@/lib/animations";
 
 const reviews = [
   {
@@ -42,19 +43,25 @@ export function Testimonials() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[800px] md:h-[800px] rounded-full bg-blush/20 blur-3xl" />
 
       <div className="max-w-4xl mx-auto relative">
-        <div className="text-center mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: ease.luxe }}
+          className="text-center mb-14"
+        >
           <div className="label-accent mb-3">Words of Love</div>
           <h2 className="font-display text-4xl lg:text-6xl">Worn by women like you</h2>
-        </div>
+        </motion.div>
 
         <div className="relative h-[280px] sm:h-[220px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.7, ease: ease.luxe }}
               className="absolute inset-0 glass rounded-3xl p-8 lg:p-12 text-center flex flex-col justify-center items-center shadow-soft"
             >
               <Quote className="w-8 h-8 text-accent mb-5 opacity-60" />
@@ -81,7 +88,9 @@ export function Testimonials() {
               role="tab"
               aria-selected={idx === i}
               aria-label={`Review from ${reviews[idx].name}`}
-              className={`h-1 rounded-full transition-all duration-500 ${idx === i ? "w-8 bg-foreground" : "w-2 bg-foreground/30"}`}
+              className={`h-1 rounded-full transition-all duration-500 ${
+                idx === i ? "w-8 bg-foreground" : "w-2 bg-foreground/30"
+              }`}
             />
           ))}
         </div>

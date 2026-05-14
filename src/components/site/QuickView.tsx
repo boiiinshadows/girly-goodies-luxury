@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X, Heart, Star, Plus } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { cartStore, useCart } from "@/lib/cart-store";
+import { ease } from "@/lib/animations";
 
 export function QuickView({ product, onClose }: { product: Product | null; onClose: () => void }) {
   const cart = useCart();
@@ -15,14 +16,15 @@ export function QuickView({ product, onClose }: { product: Product | null; onClo
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[70] bg-foreground/40 backdrop-blur-sm"
             onClick={onClose}
           />
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.97 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, y: 40, scale: 0.96 }}
+            transition={{ duration: 0.5, ease: ease.luxe }}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[71] w-full max-w-[900px] max-h-[88vh] overflow-y-auto bg-background rounded-3xl shadow-luxe"
           >
             <button
@@ -33,14 +35,24 @@ export function QuickView({ product, onClose }: { product: Product | null; onClo
               <X className="w-5 h-5" />
             </button>
             <div className="grid md:grid-cols-2 gap-0">
-              <div className="aspect-square md:aspect-auto bg-muted">
+              <motion.div
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, ease: ease.luxe }}
+                className="aspect-square md:aspect-auto bg-muted overflow-hidden"
+              >
                 <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
-              </div>
-              <div className="p-8 lg:p-10 flex flex-col">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.15, ease: ease.luxe }}
+                className="p-8 lg:p-10 flex flex-col"
+              >
                 <div className="label-accent">{product.category}</div>
                 <h3 className="font-display text-4xl mt-3">{product.name}</h3>
                 <div className="flex items-center gap-3 mt-3 text-sm text-foreground/60">
@@ -72,7 +84,7 @@ export function QuickView({ product, onClose }: { product: Product | null; onClo
                     <Heart className={`w-5 h-5 ${liked ? "fill-accent text-accent" : ""}`} />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </>

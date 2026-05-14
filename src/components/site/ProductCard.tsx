@@ -1,25 +1,57 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Heart, Star, Plus } from "lucide-react";
 import type { Product } from "@/lib/products";
 import { cartStore, useCart } from "@/lib/cart-store";
+import { revealUp, staggerContainer, ease } from "@/lib/animations";
 
 export function ProductCard({
   product,
   onQuickView,
+  index = 0,
 }: {
   product: Product;
   onQuickView?: (p: Product) => void;
+  index?: number;
 }) {
   const cart = useCart();
   const liked = cart.wishlist.includes(product.id);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Tilt on hover
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springTiltX = useSpring(tiltX, { stiffness: 200, damping: 20 });
+  const springTiltY = useSpring(tiltY, { stiffness: 200, damping: 20 });
+  const rotateX = useTransform(springTiltY, [-0.5, 0.5], [6, -6]);
+  const rotateY = useTransform(springTiltX, [-0.5, 0.5], [-6, 6]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    tiltX.set((e.clientX - rect.left) / rect.width - 0.5);
+    tiltY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    tiltX.set(0);
+    tiltY.set(0);
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative"
+      variants={revealUp}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 800,
+      }}
+      className="group relative will-change-transform"
     >
       <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-muted shadow-soft hover:shadow-luxe transition-shadow duration-700">
         <img

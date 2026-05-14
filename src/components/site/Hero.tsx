@@ -1,10 +1,22 @@
 import { useEffect, useRef, useMemo } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  useInView,
+} from "framer-motion";
 import heroPerfume from "@/assets/hero-perfume.jpg";
+import { ease, staggerHero, revealUp } from "@/lib/animations";
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
   const yBg = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const yProduct = useTransform(scrollYProgress, [0, 1], [0, -120]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
@@ -28,6 +40,7 @@ export function Hero() {
 
   return (
     <section ref={ref} id="top" className="relative min-h-screen overflow-hidden gradient-luxe">
+      {/* Parallax backdrop blobs */}
       <motion.div
         style={{ y: yBg }}
         className="absolute inset-0 pointer-events-none will-change-transform"
@@ -40,11 +53,16 @@ export function Hero() {
       <Particles />
 
       <div className="relative z-10 max-w-7xl mx-auto px-(--spacing-content-px) pt-32 lg:pt-40 pb-20 grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen">
-        <motion.div style={{ opacity }} className="relative z-10">
+        {/* Text column with staggered reveals */}
+        <motion.div
+          style={{ opacity }}
+          variants={staggerHero}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          className="relative z-10"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            variants={revealUp}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -52,9 +70,7 @@ export function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            variants={revealUp}
             className="font-display text-[clamp(2.5rem,7vw,7rem)] tracking-tight text-balance"
           >
             Elegance
@@ -64,37 +80,31 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.6 }}
+            variants={revealUp}
             className="mt-8 text-base lg:text-lg text-foreground/65 max-w-md leading-relaxed"
           >
             Hand-curated perfumes, handbags and sandals for the woman who knows that confidence is
             the softest luxury of all.
           </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.8 }}
-            className="mt-10 flex flex-wrap gap-4"
-          >
+          <motion.div variants={revealUp} className="mt-10 flex flex-wrap gap-4">
             <a
               href="#collection"
-              className="group relative overflow-hidden px-8 py-4 rounded-full bg-foreground text-background text-sm tracking-wide hover:shadow-luxe transition-all duration-700 ease-luxe"
+              className="group relative overflow-hidden px-8 py-4 rounded-full bg-foreground text-background text-sm tracking-wide hover:shadow-luxe transition-all duration-700 ease-luxe magnetic-zone"
             >
               <span className="relative z-10">Shop Collection</span>
               <span className="absolute inset-0 gradient-rose translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-luxe" />
             </a>
             <a
               href="#new"
-              className="px-8 py-4 rounded-full border border-foreground/20 text-sm tracking-wide hover:border-accent hover:text-accent transition-all duration-500"
+              className="px-8 py-4 rounded-full border border-foreground/20 text-sm tracking-wide hover:border-accent hover:text-accent transition-all duration-500 magnetic-zone"
             >
               Explore New Arrivals
             </a>
           </motion.div>
         </motion.div>
 
+        {/* Product image with parallax + mouse-follow */}
         <motion.div
           style={{ y: yProduct, scale, x: sx, rotate }}
           className="relative aspect-[3/4] max-h-[80vh] mx-auto w-full max-w-md lg:max-w-none will-change-transform"
@@ -120,10 +130,11 @@ export function Hero() {
         </motion.div>
       </div>
 
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
+        transition={{ delay: 1.8, duration: 1 }}
         style={{ opacity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-foreground/50"
       >

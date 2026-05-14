@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
 import { useState } from "react";
+import { ease } from "@/lib/animations";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -12,10 +13,10 @@ export function Footer() {
 
       <div className="max-w-7xl mx-auto relative">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1, ease: ease.luxe }}
           className="text-center max-w-2xl mx-auto mb-20"
         >
           <h3 className="font-display text-4xl lg:text-5xl">Join the maison</h3>
@@ -43,7 +44,13 @@ export function Footer() {
           </form>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 pt-14 border-t border-background/10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2, ease: ease.luxe }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-10 pt-14 border-t border-background/10"
+        >
           <div className="col-span-2 lg:col-span-1">
             <div className="font-display text-3xl">
               Girly <span className="gradient-gold">Goodies</span>
@@ -74,7 +81,7 @@ export function Footer() {
               </ul>
             </div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="mt-14 pt-8 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-5 text-xs text-background/50">
           <div>&copy; 2026 Girly Goodies. All rights reserved.</div>

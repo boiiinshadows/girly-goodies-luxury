@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import perfume from "@/assets/cat-perfume.jpg";
 import handbag from "@/assets/cat-handbag.jpg";
 import sandals from "@/assets/cat-sandals.jpg";
+import { revealUp, staggerContainer, ease } from "@/lib/animations";
 
 const cats = [
   { name: "Perfumes", tag: "Olfactive Poetry", img: perfume, href: "#perfumes" },
@@ -19,7 +20,7 @@ export function Categories() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.9, ease: ease.luxe }}
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         >
           <div>
@@ -36,11 +37,17 @@ export function Categories() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid md:grid-cols-3 gap-6 lg:gap-8"
+        >
           {cats.map((c, i) => (
             <CategoryCard key={c.name} {...c} delay={i * 0.15} />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -61,21 +68,25 @@ function CategoryCard({
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
 
+  // Spring-based tilt
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springX = useSpring(tiltX, { stiffness: 150, damping: 20 });
+  const springY = useSpring(tiltY, { stiffness: 150, damping: 20 });
+  const rotateX = useTransform(springY, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-8, 8]);
+
   const handleMove = (e: React.MouseEvent) => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.setProperty("--rx", `${-y * 8}deg`);
-    el.style.setProperty("--ry", `${x * 8}deg`);
+    tiltX.set((e.clientX - rect.left) / rect.width - 0.5);
+    tiltY.set((e.clientY - rect.top) / rect.height - 0.5);
   };
   const handleLeave = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.setProperty("--rx", `0deg`);
-    el.style.setProperty("--ry", `0deg`);
+    tiltX.set(0);
+    tiltY.set(0);
   };
 
   return (
@@ -84,15 +95,13 @@ function CategoryCard({
       href={href}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 1, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative block aspect-[3/4] rounded-3xl overflow-hidden shadow-soft hover:shadow-luxe transition-all duration-700 ease-luxe will-change-transform"
+      variants={revealUp}
       style={{
-        transform: "perspective(1200px) rotateX(var(--rx,0)) rotateY(var(--ry,0))",
-        transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s",
+        rotateX,
+        rotateY,
+        transformPerspective: 1200,
       }}
+      className="group relative block aspect-[3/4] rounded-3xl overflow-hidden shadow-soft hover:shadow-luxe transition-shadow duration-700 ease-luxe will-change-transform"
     >
       <img
         src={img}

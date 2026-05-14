@@ -1,10 +1,11 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { bestSellers } from "@/lib/products";
+import { bestSellers, type Product } from "@/lib/products";
 import { ProductCard } from "./ProductCard";
+import { revealUp, staggerContainer, ease } from "@/lib/animations";
 
-export function BestSellers({ onQuickView }: { onQuickView: (p: any) => void }) {
+export function BestSellers({ onQuickView }: { onQuickView: (p: Product) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 1 | -1) => {
     ref.current?.scrollBy({ left: dir * 400, behavior: "smooth" });
@@ -17,7 +18,7 @@ export function BestSellers({ onQuickView }: { onQuickView: (p: any) => void }) 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: ease.luxe }}
           className="flex items-end justify-between gap-6 mb-12"
         >
           <div>
@@ -47,10 +48,17 @@ export function BestSellers({ onQuickView }: { onQuickView: (p: any) => void }) 
         ref={ref}
         className="flex gap-6 overflow-x-auto pb-8 px-(--spacing-content-px) max-w-7xl mx-auto snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {bestSellers.map((p) => (
-          <div key={p.id} className="shrink-0 w-[280px] sm:w-[320px] snap-start">
-            <ProductCard product={p} onQuickView={onQuickView} />
-          </div>
+        {bestSellers.map((p, i) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: i * 0.1, ease: ease.luxe }}
+            className="shrink-0 w-[280px] sm:w-[320px] snap-start"
+          >
+            <ProductCard product={p} onQuickView={onQuickView} index={i} />
+          </motion.div>
         ))}
       </div>
     </section>
