@@ -27,8 +27,8 @@ export function Navbar() {
         scrolled ? "py-3 glass" : "py-5 bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 group">
+      <div className="max-w-7xl mx-auto px-(--spacing-content-px) flex items-center justify-between">
+        <a href="#top" className="flex items-center gap-2">
           <span className="font-display text-2xl tracking-tight">
             Girly <span className="gradient-gold font-medium">Goodies</span>
           </span>
@@ -47,23 +47,31 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <button className="p-2 hover:text-accent transition-colors hidden sm:block" aria-label="Search">
+        <div className="flex items-center gap-1">
+          <button
+            className="p-2.5 hover:text-accent transition-colors hidden sm:flex"
+            aria-label="Search"
+          >
             <Search className="w-5 h-5" />
           </button>
-          <button className="p-2 hover:text-accent transition-colors hidden sm:block" aria-label="Wishlist">
+          <button
+            className="p-2.5 hover:text-accent transition-colors hidden sm:flex"
+            aria-label="Wishlist"
+          >
             <Heart className="w-5 h-5" />
           </button>
           <button
             onClick={() => cartStore.setOpen(true)}
-            className="p-2 hover:text-accent transition-colors relative"
+            className="p-2.5 hover:text-accent transition-colors relative"
             aria-label="Cart"
           >
             <ShoppingBag className="w-5 h-5" />
             <AnimatePresence>
               {count > 0 && (
                 <motion.span
-                  initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
                   className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full gradient-rose text-[10px] flex items-center justify-center text-white font-medium"
                 >
                   {count}
@@ -71,7 +79,7 @@ export function Navbar() {
               )}
             </AnimatePresence>
           </button>
-          <button className="p-2 lg:hidden" onClick={() => setMobile(!mobile)} aria-label="Menu">
+          <button className="p-2.5 lg:hidden" onClick={() => setMobile(!mobile)} aria-label="Menu">
             {mobile ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
@@ -85,9 +93,14 @@ export function Navbar() {
             exit={{ height: 0, opacity: 0 }}
             className="lg:hidden overflow-hidden glass mt-3"
           >
-            <div className="px-6 py-6 flex flex-col gap-4">
+            <div className="px-(--spacing-content-px) py-6 flex flex-col gap-4">
               {links.map((l) => (
-                <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMobile(false)} className="font-display text-2xl">
+                <a
+                  key={l}
+                  href={`#${l.toLowerCase()}`}
+                  onClick={() => setMobile(false)}
+                  className="font-display text-2xl"
+                >
                   {l}
                 </a>
               ))}

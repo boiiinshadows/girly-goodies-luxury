@@ -4,14 +4,15 @@ import { products, type Category } from "@/lib/products";
 import { ProductCard } from "./ProductCard";
 
 const tabs = ["All", "Perfumes", "Handbags", "Sandals"] as const;
-type Tab = typeof tabs[number];
+type Tab = (typeof tabs)[number];
 
 export function ProductGrid({ onQuickView }: { onQuickView: (p: any) => void }) {
   const [active, setActive] = useState<Tab>("All");
-  const filtered = active === "All" ? products : products.filter((p) => p.category === (active as Category));
+  const filtered =
+    active === "All" ? products : products.filter((p) => p.category === (active as Category));
 
   return (
-    <section id="perfumes" className="py-28 lg:py-36 px-6">
+    <section id="perfumes" className="section-y px-(--spacing-content-px)">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -20,7 +21,7 @@ export function ProductGrid({ onQuickView }: { onQuickView: (p: any) => void }) 
           transition={{ duration: 0.8 }}
           className="text-center mb-14"
         >
-          <div className="text-xs tracking-[0.3em] uppercase text-accent mb-3">Curated For You</div>
+          <div className="label-accent mb-3">Curated For You</div>
           <h2 className="font-display text-5xl lg:text-7xl">The Edit</h2>
         </motion.div>
 
@@ -29,7 +30,7 @@ export function ProductGrid({ onQuickView }: { onQuickView: (p: any) => void }) 
             <button
               key={t}
               onClick={() => setActive(t)}
-              className={`px-6 py-2.5 rounded-full text-xs tracking-[0.2em] uppercase transition-all duration-500 ${
+              className={`px-6 py-2.5 rounded-full label-xs transition-all duration-500 ${
                 active === t
                   ? "bg-foreground text-background shadow-soft"
                   : "border border-foreground/15 hover:border-accent hover:text-accent"
@@ -46,7 +47,7 @@ export function ProductGrid({ onQuickView }: { onQuickView: (p: any) => void }) 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
           >
             {filtered.map((p) => (

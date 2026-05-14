@@ -13,7 +13,7 @@ const cats = [
 
 export function Categories() {
   return (
-    <section id="collection" className="py-28 lg:py-40 px-6 relative">
+    <section id="collection" className="section-y-lg px-(--spacing-content-px) relative">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -23,15 +23,16 @@ export function Categories() {
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         >
           <div>
-            <div className="text-xs tracking-[0.3em] uppercase text-accent mb-4">The Maison</div>
-            <h2 className="font-display text-5xl lg:text-7xl text-balance leading-[1]">
-              Three rituals.<br />
+            <div className="label-accent mb-4">The Maison</div>
+            <h2 className="font-display text-5xl lg:text-7xl text-balance">
+              Three rituals.
+              <br />
               <span className="italic">One signature.</span>
             </h2>
           </div>
           <p className="md:max-w-sm text-foreground/60 leading-relaxed">
-            From the first spritz to the last step — every piece is shaped by hand
-            and made to be worn for a lifetime.
+            From the first spritz to the last step — every piece is shaped by hand and made to be
+            worn for a lifetime.
           </p>
         </motion.div>
 
@@ -45,10 +46,23 @@ export function Categories() {
   );
 }
 
-function CategoryCard({ name, tag, img, href, delay }: { name: string; tag: string; img: string; href: string; delay: number }) {
+function CategoryCard({
+  name,
+  tag,
+  img,
+  href,
+  delay,
+}: {
+  name: string;
+  tag: string;
+  img: string;
+  href: string;
+  delay: number;
+}) {
   const ref = useRef<HTMLAnchorElement>(null);
 
   const handleMove = (e: React.MouseEvent) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -74,7 +88,7 @@ function CategoryCard({ name, tag, img, href, delay }: { name: string; tag: stri
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 1, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative block aspect-[3/4] rounded-3xl overflow-hidden shadow-soft hover:shadow-luxe transition-all duration-700 ease-luxe"
+      className="group relative block aspect-[3/4] rounded-3xl overflow-hidden shadow-soft hover:shadow-luxe transition-all duration-700 ease-luxe will-change-transform"
       style={{
         transform: "perspective(1200px) rotateX(var(--rx,0)) rotateY(var(--ry,0))",
         transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.7s",
@@ -86,15 +100,15 @@ function CategoryCard({ name, tag, img, href, delay }: { name: string; tag: stri
         loading="lazy"
         width={1024}
         height={1280}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-luxe group-hover:scale-110"
+        className="absolute inset-0 w-full h-full object-cover img-zoom"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/10 to-transparent" />
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-br from-rose-gold/20 to-blush/10" />
 
-      <div className="absolute bottom-0 left-0 right-0 p-8 text-background">
-        <div className="text-[10px] tracking-[0.3em] uppercase text-background/70 mb-2">{tag}</div>
+      <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8 text-background">
+        <div className="label-xs text-background/70 mb-2">{tag}</div>
         <div className="flex items-end justify-between gap-4">
-          <h3 className="font-display text-4xl lg:text-5xl">{name}</h3>
+          <h3 className="font-display text-3xl lg:text-5xl">{name}</h3>
           <span className="w-11 h-11 rounded-full glass flex items-center justify-center text-background group-hover:rotate-45 transition-transform duration-700 ease-luxe">
             <ArrowUpRight className="w-5 h-5" />
           </span>

@@ -7,8 +7,8 @@ export function Footer() {
   const [sent, setSent] = useState(false);
 
   return (
-    <footer className="bg-foreground text-background pt-24 pb-10 px-6 relative overflow-hidden">
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full gradient-rose blur-3xl opacity-20" />
+    <footer className="bg-foreground text-background pt-24 pb-10 px-(--spacing-content-px) relative overflow-hidden">
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[300px] md:w-[800px] md:h-[400px] rounded-full gradient-rose blur-3xl opacity-20" />
 
       <div className="max-w-7xl mx-auto relative">
         <motion.div
@@ -23,16 +23,22 @@ export function Footer() {
             Private launches, soft scents and styling letters — straight to your inbox.
           </p>
           <form
-            onSubmit={(e) => { e.preventDefault(); if (email) setSent(true); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (email) setSent(true);
+            }}
             className="mt-8 flex flex-col sm:flex-row gap-2 max-w-md mx-auto"
           >
             <input
-              value={email} onChange={(e) => setEmail(e.target.value)}
-              type="email" required placeholder="Your email"
-              className="flex-1 px-5 py-4 rounded-full bg-background/10 border border-background/15 placeholder:text-background/40 outline-none focus:border-accent"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              required
+              placeholder="Your email"
+              className="flex-1 px-5 py-4 rounded-full bg-background/10 border border-background/15 placeholder:text-background/40 outline-none focus:border-accent transition-colors"
             />
-            <button className="px-7 py-4 rounded-full gradient-rose text-background text-xs tracking-[0.2em] uppercase hover:scale-[1.02] transition-transform">
-              {sent ? "Welcome ✦" : "Subscribe"}
+            <button className="px-7 py-4 rounded-full gradient-rose text-background label-xs hover:scale-[1.02] transition-transform">
+              {sent ? "Welcome" : "Subscribe"}
             </button>
           </form>
         </motion.div>
@@ -53,11 +59,16 @@ export function Footer() {
             { t: "Care", l: ["Contact", "Shipping", "Returns", "Size Guide"] },
           ].map((c) => (
             <div key={c.t}>
-              <div className="text-[10px] tracking-[0.3em] uppercase text-background/50 mb-4">{c.t}</div>
+              <div className="label-xs text-background/50 mb-4">{c.t}</div>
               <ul className="space-y-3">
                 {c.l.map((it) => (
                   <li key={it}>
-                    <a href="#" className="text-sm text-background/80 hover:text-accent transition-colors">{it}</a>
+                    <a
+                      href="#"
+                      className="text-sm text-background/80 hover:text-accent transition-colors"
+                    >
+                      {it}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -66,10 +77,15 @@ export function Footer() {
         </div>
 
         <div className="mt-14 pt-8 border-t border-background/10 flex flex-col sm:flex-row items-center justify-between gap-5 text-xs text-background/50">
-          <div>© 2026 Girly Goodies. All rights reserved.</div>
+          <div>&copy; 2026 Girly Goodies. All rights reserved.</div>
           <div className="flex gap-3">
             {[Instagram, Facebook, Twitter, Mail].map((I, i) => (
-              <a key={i} href="#" aria-label="Social" className="w-9 h-9 rounded-full border border-background/15 flex items-center justify-center hover:border-accent hover:text-accent transition-colors">
+              <a
+                key={i}
+                href="#"
+                aria-label="Social"
+                className="w-11 h-11 rounded-full border border-background/15 flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
+              >
                 <I className="w-4 h-4" />
               </a>
             ))}

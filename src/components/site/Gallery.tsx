@@ -18,7 +18,7 @@ const tiles = [
 
 export function Gallery() {
   return (
-    <section id="journal" className="py-28 lg:py-36 px-6 bg-cream/40">
+    <section id="journal" className="section-y px-(--spacing-content-px) bg-cream/40">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -27,7 +27,7 @@ export function Gallery() {
           transition={{ duration: 0.8 }}
           className="text-center mb-14"
         >
-          <div className="text-xs tracking-[0.3em] uppercase text-accent mb-3 flex items-center justify-center gap-2">
+          <div className="label-accent mb-3 flex items-center justify-center gap-2">
             <Instagram className="w-4 h-4" /> @girlygoodies
           </div>
           <h2 className="font-display text-4xl lg:text-6xl">Tagged with love</h2>
@@ -38,13 +38,20 @@ export function Gallery() {
             <motion.a
               href="#"
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               className={`group relative overflow-hidden rounded-2xl shadow-soft ${t.span}`}
             >
-              <img src={t.src} alt="" loading="lazy" width={1024} height={1024} className="w-full h-full object-cover transition-transform duration-[1.4s] ease-luxe group-hover:scale-110" />
+              <img
+                src={t.src}
+                alt=""
+                loading="lazy"
+                width={1024}
+                height={1024}
+                className="w-full h-full object-cover img-zoom"
+              />
               <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-colors duration-500 flex items-center justify-center">
                 <Instagram className="w-7 h-7 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>

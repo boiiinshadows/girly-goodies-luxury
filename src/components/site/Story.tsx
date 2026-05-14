@@ -18,14 +18,14 @@ export function Story() {
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.fromTo(
           el,
-          { y: 80, opacity: 0 },
+          { y: 60, opacity: 0 },
           {
             y: 0,
             opacity: 1,
-            duration: 1.4,
+            duration: 1.2,
             ease: "power3.out",
             scrollTrigger: { trigger: el, start: "top 85%" },
-          }
+          },
         );
       });
     }, ref);
@@ -33,37 +33,57 @@ export function Story() {
   }, []);
 
   return (
-    <section id="story" ref={ref} className="py-28 lg:py-44 px-6 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-        <motion.div style={{ y: y1 }} className="lg:col-span-6 relative">
+    <section
+      id="story"
+      ref={ref}
+      className="section-y-lg px-(--spacing-content-px) relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+        <motion.div style={{ y: y1 }} className="lg:col-span-6 relative will-change-transform">
           <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-luxe">
-            <img src={story} alt="Woman holding luxury handbag" loading="lazy" width={1280} height={1600} className="w-full h-full object-cover" />
+            <img
+              src={story}
+              alt="Woman holding luxury handbag"
+              loading="lazy"
+              width={1280}
+              height={1600}
+              className="w-full h-full object-cover"
+            />
           </div>
           <motion.div
             style={{ y: y2 }}
-            className="absolute -bottom-12 -right-6 lg:-right-16 w-2/3 aspect-square rounded-3xl overflow-hidden shadow-luxe ring-8 ring-background"
+            className="absolute -bottom-12 -right-6 lg:-right-16 w-2/3 aspect-square rounded-3xl overflow-hidden shadow-luxe ring-8 ring-background will-change-transform"
           >
-            <img src={gallery1} alt="Luxury accessories flat lay" loading="lazy" width={1024} height={1024} className="w-full h-full object-cover" />
+            <img
+              src={gallery1}
+              alt="Luxury accessories flat lay"
+              loading="lazy"
+              width={1024}
+              height={1024}
+              className="w-full h-full object-cover"
+            />
           </motion.div>
 
-          {/* Decorative floating */}
-          <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full gradient-rose blur-3xl opacity-30 -z-10" />
+          <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full gradient-rose blur-3xl opacity-30 -z-10 hidden md:block" />
         </motion.div>
 
         <div className="lg:col-span-6 lg:pl-10">
-          <div data-reveal className="text-xs tracking-[0.3em] uppercase text-accent mb-5">Our Story</div>
-          <h2 data-reveal className="font-display text-4xl lg:text-6xl leading-[1.05] text-balance">
-            Crafted softly,<br />
+          <div data-reveal className="label-accent mb-5">
+            Our Story
+          </div>
+          <h2 data-reveal className="font-display text-4xl lg:text-6xl text-balance">
+            Crafted softly,
+            <br />
             <span className="italic">worn boldly.</span>
           </h2>
           <p data-reveal className="mt-8 text-foreground/65 leading-relaxed text-base lg:text-lg">
-            Girly Goodies is a love letter to the modern woman — to the morning ritual,
-            the late-night confidence, the perfume that becomes a memory. Each piece is
-            sourced from small ateliers and shaped by hands that care.
+            Girly Goodies is a love letter to the modern woman — to the morning ritual, the
+            late-night confidence, the perfume that becomes a memory. Each piece is sourced from
+            small ateliers and shaped by hands that care.
           </p>
           <p data-reveal className="mt-5 text-foreground/65 leading-relaxed text-base lg:text-lg">
-            Soft luxury. Quiet glamour. Made for a generation that gets to define
-            elegance on its own terms.
+            Soft luxury. Quiet glamour. Made for a generation that gets to define elegance on its
+            own terms.
           </p>
 
           <div data-reveal className="mt-10 grid grid-cols-3 gap-6">
